@@ -106,6 +106,6 @@ weighted avg       0.95      0.95      0.95       166
   prevent the model from doing its job.
 
 - **Target binning for classification.** `CO(GT)` is a continuous value, but
-  the rubric asks for accuracy and F1 classification metrics. The target
-  is therefore separated into three different classes as a threshold to provide balance: 
+  for me to get accuracy and F1 classification metrics, the target
+  is separated into 3 different classes as a threshold: 
   Low (<2.0), Medium (2.0–4.0), and High (≥4.0). 
