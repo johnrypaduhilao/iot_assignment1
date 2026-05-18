@@ -74,6 +74,7 @@ and read by the streams processor at startup.
 ---
 
 ## Model Performance
+```
               precision    recall  f1-score   support
 
         High       1.00      1.00      1.00        23
@@ -83,7 +84,7 @@ and read by the streams processor at startup.
     accuracy                           0.95       166
    macro avg       0.96      0.96      0.96       166
 weighted avg       0.95      0.95      0.95       166
-
+```
 ---
 
 ## Notes
