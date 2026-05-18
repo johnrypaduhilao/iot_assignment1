@@ -4,6 +4,10 @@ import ssl
 import json
 import joblib
 import faust
+import pandas as pd
+import logging
+logger = logging.getLogger(__name__)
+
 
 from kafka_config import KafkaConfig
 
@@ -28,6 +32,7 @@ app = faust.App(
     broker_credentials=broker_credentials,
     value_serializer="raw", 
     store="memory://", 
+    topic_replication_factor=3,
 )
 
 raw_topic = app.topic("raw_data", value_serializer="raw")
@@ -62,11 +67,13 @@ async def process(stream):
         if features is None:
             output = set_json(key, row.get("CO(GT)"), None, "skipped")
         else:
-            output = set_json(key, row.get("CO(GT)"), str(MODEL.predict([features])[0]), "ok")
+            features_df = pd.DataFrame([features], columns=FEATURES)
+            predicted = MODEL.predict(features_df)[0]
+            output = set_json(key, row.get("CO(GT)"), str(predicted), "ok")
 
         await predictions_topic.send(
             key=key.encode("utf-8"),
             value=json.dumps(output).encode("utf-8"),
         )
 
-        print(f"{key}  ||  {output['predicted_class']}  ({output['status']})")
+        logger.info(f"{key} || {output['predicted_class']} ({output['status']})")
