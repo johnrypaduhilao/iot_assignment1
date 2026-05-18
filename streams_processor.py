@@ -61,7 +61,7 @@ async def process(stream):
     async for raw_message in stream:
         row = json.loads(raw_message)
 
-        key = f"{row.get('Date', '')}{row.get('Time', '')}"
+        key = f"{row.get('Date', '')}T{row.get('Time', '')}"
         features = extract_features(row)
 
         if features is None:

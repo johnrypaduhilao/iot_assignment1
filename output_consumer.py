@@ -7,7 +7,7 @@ from confluent_kafka import Consumer, KafkaError
 from kafka_config import KafkaConfig
 
 TOPIC_NAME = "predictions"
-GROUP_ID = "consumer-group-id-123"
+GROUP_ID = "output-consumer-final"
 POLL_TIMEOUT = 1.0
 
 
@@ -23,14 +23,15 @@ def build_consumer() -> Consumer:
 
 
 def format_message(payload: dict) -> str:
-    """Format one prediction dict for display."""
     ts = datetime.now().strftime("%H:%M:%S")
     key = payload.get("key", "?")
     actual = payload.get("actual_co", "?")
     predicted = payload.get("predicted_class", "?")
     status = payload.get("status", "?")
+    
+    actual_display = "MISSING" if actual == -200.0 else str(actual)
 
-    return f"[{ts}]  {key:<22}  actual={str(actual):<6}  predicted={str(predicted):<8}  [{status}]"
+    return f"[{ts}]  {key:<22}  actual={str(actual_display):<6}  predicted={str(predicted):<8}  [{status}]"
 
 
 def main() -> None:

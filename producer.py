@@ -42,7 +42,7 @@ def main() -> None:
     signal.signal(signal.SIGINT, handle_sigint)
  
     for i, row in enumerate(rows, start=1):
-        key = f"{row.get('Date', '')}{row.get('Time', '')}"
+        key = f"{row.get('Date', '')}T{row.get('Time', '')}"
  
         payload = json.dumps(row, default=str)
  
